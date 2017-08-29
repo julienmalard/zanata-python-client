@@ -1,3 +1,4 @@
+from __future__ import print_function
 # vim: set et sts=4 sw=4:
 #
 # Zanata Python Client
@@ -85,7 +86,7 @@ def strip_docstring(docstring, tabstop=4):
 def extract_metavars(list_of_option_sets):
     metavars = {}
     for option_set in list_of_option_sets:
-        for internal_name, option_list in option_set.items():
+        for internal_name, option_list in list(option_set.items()):
             for option in option_list:
                 if 'metavar' in option:
                     metavar = option['metavar']
@@ -128,7 +129,7 @@ def _parse_command_line(option_sets, subcmds=None, sys_args=None):
     by_option = {}
     used_internal = []
     # Check the options are valid and generate the get_opt options
-    for internal_name, option_list in option_sets.items():
+    for internal_name, option_list in list(option_sets.items()):
         if internal_name in used_internal:
             raise OptionConfigurationError(
                 'The internal option %r has already been configured' % (
@@ -162,7 +163,7 @@ def _parse_command_line(option_sets, subcmds=None, sys_args=None):
                         new = option.copy()
                         new['name'] = short.strip(':')
                         by_option[short.strip(':')] = new
-            for longopt in option['long']:
+            for longopt in option['int']:
                 if 'metavar' in option:
                     long_options.append(longopt.strip('-=') + '=')
                 else:
@@ -203,7 +204,7 @@ def _parse_command_line(option_sets, subcmds=None, sys_args=None):
         orig_command = args[0]
         command = None
         sub = args[1:]
-        for name, subcmd in subcmds.items():
+        for name, subcmd in list(subcmds.items()):
             if orig_command == name and subcmd:
                 if sub:
                     if sub[0] in subcmd:
@@ -242,7 +243,7 @@ def _parse_command_line(option_sets, subcmds=None, sys_args=None):
                 all_options[internal] = [new]
 
         if option_types['shared']:
-            for k, vs in option_types['shared'].items():
+            for k, vs in list(option_types['shared'].items()):
                 for v in vs:
                     if k in option_types['command']:
                         option_types['command'][k].append(v)

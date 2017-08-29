@@ -1,3 +1,4 @@
+from __future__ import print_function
 # vim:set et sts=4 sw=4:
 #
 # Zanata Python Client
@@ -21,6 +22,8 @@
 # Boston, MA  02110-1301, USA.
 
 
+from future.builtins import str
+from future.builtins import object
 __all__ = (
     "Project", "Iteration", "Stats", "ToolBox", "FileMappingRule"
 )
@@ -35,19 +38,19 @@ from lxml import etree
 
 class Link(object):
     def __init__(self, dict):
-        for a, b in dict.items():
+        for a, b in list(dict.items()):
             setattr(self, str(a), b)
 
 
 class Iteration(object):
     def __init__(self, dict):
-        for a, b in dict.items():
+        for a, b in list(dict.items()):
             setattr(self, str(a), b)
 
 
 class Project(object):
     def __init__(self, d):
-        for a, b in d.items():
+        for a, b in list(d.items()):
             if not a == 'links':
                 setattr(self, str(a), b)
             else:
@@ -131,7 +134,7 @@ class ToolBox(object):
         """
         if not isinstance(data, dict):
             raise AttributeError('Unexpected Dict Structure')
-        for k, v in data.items():
+        for k, v in list(data.items()):
             if isinstance(v, dict):
                 # child dictionary
                 child = etree.Element(k)
@@ -148,7 +151,7 @@ class ToolBox(object):
                 element.text = v
             else:
                 # set attribute
-                element.set(k, unicode(v))
+                element.set(k, str(v))
 
     @staticmethod
     def dict2xml(root_elem, dict_object):
@@ -215,7 +218,7 @@ class FileMappingRule(object):
 
     def _get_custom_mapping_rule(self):
         if self.mapping_rules and len(self.mapping_rules) > 0:
-            for pattern, rule in self.mapping_rules.items():
+            for pattern, rule in list(self.mapping_rules.items()):
                 if '/' in pattern and '/' not in self.remote_filepath:
                     self.remote_filepath = '/' + self.remote_filepath
                 if pattern == rule or fnmatch.fnmatch(

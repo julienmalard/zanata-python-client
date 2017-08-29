@@ -19,6 +19,8 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from builtins import str
+from builtins import object
 from collections import namedtuple
 
 
@@ -259,8 +261,8 @@ class ServiceConfig(object):
             self._config_dict = resource_config_dict
             self._middle_url = middle_url
             self._service = zpc_services[service]
-            for attrib, value in (self._config_dict[self._service.rest_resource]
-                                  [self._service.mount_point][self._service.http_method].items()):
+            for attrib, value in (list(self._config_dict[self._service.rest_resource]
+                                  [self._service.mount_point][self._service.http_method].items())):
                 setattr(self, str(attrib), value)
 
     @property

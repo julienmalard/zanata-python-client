@@ -20,6 +20,8 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from builtins import str
+from builtins import object
 __all__ = (
     "PublicanUtility",
 )
@@ -39,7 +41,7 @@ except ImportError:
     import simplejson as json
 
 
-class PublicanUtility:
+class PublicanUtility(object):
     def __init__(self):
         self.log = Logger()
 
@@ -121,7 +123,7 @@ class PublicanUtility:
             fuzzy = True
 
         if entry.msgid_plural:
-            keys = entry.msgstr_plural.keys()
+            keys = list(entry.msgstr_plural.keys())
             keys.sort()
             for key in keys:
                 contents.append(entry.msgstr_plural[key])
@@ -169,7 +171,7 @@ class PublicanUtility:
 
             if entry.msgid_plural:
                 content = []
-                keys = entry.msgstr_plural.keys()
+                keys = list(entry.msgstr_plural.keys())
                 keys.sort()
                 for key in keys:
                     content.append(entry.msgstr_plural[key])
@@ -184,7 +186,7 @@ class PublicanUtility:
 
     def validate_content_type(self, content_type, object_type):
         PATTERN = r'.+? charset=([\w_\-:\.]+)'
-        rxt = re.compile(unicode(PATTERN))
+        rxt = re.compile(str(PATTERN))
 
         match = rxt.search(content_type)
         if match:

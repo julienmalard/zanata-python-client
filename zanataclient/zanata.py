@@ -1,3 +1,4 @@
+from __future__ import print_function
 # vim: set et sts=4 sw=4:
 #
 # Zanata Python Client
@@ -20,6 +21,7 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from future.builtins import str
 import getopt
 import os
 import signal
@@ -57,249 +59,249 @@ option_sets = {
     'url': [
         dict(
             type='command',
-            long=['--url'],
+            int=['--url'],
             metavar='URL',
         ),
     ],
     'user_name': [
         dict(
             type='command',
-            long=['--username'],
+            int=['--username'],
             metavar='USERNAME',
         ),
     ],
     'key': [
         dict(
             type='command',
-            long=['--apikey'],
+            int=['--apikey'],
             metavar='APIKEY',
         ),
     ],
     'user_config': [
         dict(
             type='command',
-            long=['--user-config'],
+            int=['--user-config'],
             metavar='USER-CONFIG',
         ),
     ],
     'project_config': [
         dict(
             type='command',
-            long=['--project-config'],
+            int=['--project-config'],
             metavar='PROJECT-CONFIG',
         ),
     ],
     'project_id': [
         dict(
             type='command',
-            long=['--project-id'],
+            int=['--project-id'],
             metavar='PROJECT-ID',
         ),
     ],
     'project_version': [
         dict(
             type='command',
-            long=['--project-version'],
+            int=['--project-version'],
             metavar='PROJECT-VERSION',
         ),
     ],
     'dir': [
         dict(
             type='command',
-            long=['--dir'],
+            int=['--dir'],
             metavar='DIR',
         ),
     ],
     'force': [
         dict(
             type='command',
-            long=['--force'],
+            int=['--force'],
             short=['-f'],
         ),
     ],
     'help': [
         dict(
             type='shared',
-            long=['--help'],
+            int=['--help'],
             short=['-h'],
         ),
     ],
     'srcdir': [
         dict(
             type='command',
-            long=['--srcdir'],
+            int=['--srcdir'],
             metavar='SRCDIR',
         ),
     ],
     'srcfile': [
         dict(
             type='command',
-            long=['--srcfile'],
+            int=['--srcfile'],
             metavar='SRCFILE',
         ),
     ],
     'transdir': [
         dict(
             type='command',
-            long=['--transdir'],
+            int=['--transdir'],
             metavar='TRANSDIR',
         ),
     ],
     'dstdir': [
         dict(
             type='command',
-            long=['--dstdir'],
+            int=['--dstdir'],
             metavar='DSTDIR',
         ),
     ],
     'project_name': [
         dict(
             type='command',
-            long=['--project-name'],
+            int=['--project-name'],
             metavar='PROJECTNAME',
         ),
     ],
     'project_desc': [
         dict(
             type='command',
-            long=['--project-desc'],
+            int=['--project-desc'],
             metavar='PROJECTDESC',
         ),
     ],
     'version_name': [
         dict(
             type='command',
-            long=['--version-name'],
+            int=['--version-name'],
             metavar='VERSIONNAME',
         ),
     ],
     'version_desc': [
         dict(
             type='command',
-            long=['--version-desc'],
+            int=['--version-desc'],
             metavar='VERSIONDESC',
         ),
     ],
     'lang': [
         dict(
             type='command',
-            long=['--lang'],
+            int=['--lang'],
             metavar='LANG',
         ),
     ],
     'email': [
         dict(
             type='command',
-            long=['--email'],
+            int=['--email'],
             metavar='EMAIL',
         ),
     ],
     'merge': [
         dict(
             type='command',
-            long=['--merge'],
+            int=['--merge'],
             metavar='MERGE',
         ),
     ],
     'pushtrans': [
         dict(
             type='command',
-            long=['--push-trans'],
+            int=['--push-trans'],
         ),
     ],
     'importpo': [
         dict(
             type='command',
-            long=['--import-po']
+            int=['--import-po']
         ),
     ],
     'copytrans': [
         dict(
             type='command',
-            long=['--copytrans'],
+            int=['--copytrans'],
         ),
     ],
     'nocopytrans': [
         dict(
             type='command',
-            long=['--no-copytrans'],
+            int=['--no-copytrans'],
         ),
     ],
     'project_type': [
         dict(
             type='command',
-            long=['--project-type'],
+            int=['--project-type'],
             metavar='PROJECTTYPE',
         ),
     ],
     'client_version': [
         dict(
             type='program',
-            long=['--version'],
+            int=['--version'],
             short=['-V'],
         ),
     ],
     'comment_cols': [
         dict(
             type='command',
-            long=['--commentcols'],
+            int=['--commentcols'],
             metavar='COMMENTCOLS',
         ),
     ],
     'sourcecomments': [
         dict(
             type='command',
-            long=['--sourcecommentsastarget'],
+            int=['--sourcecommentsastarget'],
         ),
     ],
     'skeletons': [
         dict(
             type='command',
-            long=['--create-skeletons'],
+            int=['--create-skeletons'],
         ),
     ],
     'pushtransonly': [
         dict(
             type='command',
-            long=['--push-trans-only'],
+            int=['--push-trans-only'],
         ),
     ],
     'pushtype': [
         dict(
             type='command',
-            long=['--push-type'],
+            int=['--push-type'],
             metavar='PUSHTYPE',
         ),
     ],
     'mindocpercent': [
         dict(
             type='command',
-            long=['--min-doc-percent'],
+            int=['--min-doc-percent'],
             metavar='MINDOCPERCENT',
         ),
     ],
     'disablesslcert': [
         dict(
             type='command',
-            long=['--disable-ssl-cert'],
+            int=['--disable-ssl-cert'],
         ),
     ],
     'detailstats': [
         dict(
             type='command',
-            long=['--details'],
+            int=['--details'],
         ),
     ],
     'wordstats': [
         dict(
             type='command',
-            long=['--word'],
+            int=['--word'],
         ),
     ],
     'docid': [
         dict(
             type='command',
-            long=['--docid'],
+            int=['--docid'],
             metavar='DOCID',
         ),
     ]

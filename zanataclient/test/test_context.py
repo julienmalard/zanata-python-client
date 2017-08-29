@@ -136,12 +136,12 @@ class ProjectContextTest(unittest.TestCase):
         self.assertEqual(context_data['locale_map'], {"zh-CN": "zh-Hans"},
                          'context_data should contain locale_map from project_config')
         options_set = []
-        for optionset in (self.context.remote_config.keys(), self.context.local_config.keys(),
-                          self.context.command_dict.keys()):
+        for optionset in (list(self.context.remote_config.keys()), list(self.context.local_config.keys()),
+                          list(self.context.command_dict.keys())):
             options_set.extend(optionset)
         options_set = list(set(options_set))
         # Adding 1, as 'key' is being filtered out from context_data
-        self.assertEqual(len(options_set), (len(context_data.keys()) + 1),
+        self.assertEqual(len(options_set), (len(list(context_data.keys())) + 1),
                          'context_data should contain all unique keys and their values')
 
     @mock.patch('zanataclient.parseconfig.ZanataConfig.read_project_config')

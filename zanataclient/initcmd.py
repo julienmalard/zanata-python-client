@@ -1,3 +1,4 @@
+from __future__ import print_function
 # vim: set et sts=4 sw=4:
 #
 # Zanata Python Client
@@ -20,6 +21,9 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from builtins import input
+from builtins import str
+from builtins import range
 import fnmatch
 import os
 import sys
@@ -95,23 +99,20 @@ class ZanataInit(CommandsInit, ContextBase):
                 counter += 1
                 counter_dict.update({str(counter): option})
                 self.ptxt('info_blue', "\t%s) %s" % (str(counter), option))
-        choice = input(message)
+        choice = eval(input(message))
         while choice not in counter_dict:
             if filter_mode:
-                filtered_options = filter(
-                    lambda option:
-                    option if option.find(choice) != -1 else None, options
-                )
+                filtered_options = [option if option and option.find(choice) != -1 else None for option in options]
                 return self.print_options(header, filtered_options, message, True)
             else:
-                self.ptxt('alert', "Expecting %s but got: %s" % (str(counter_dict.keys()), choice))
-                choice = input(message)
+                self.ptxt('alert', "Expecting %s but got: %s" % (str(list(counter_dict.keys())), choice))
+                choice = eval(input(message))
         return counter_dict[choice]
 
     def print_yes_no(self, message):
-        yes_no = input(message)
+        yes_no = eval(input(message))
         while yes_no not in ('y', 'n', 'Y', 'N'):
-            yes_no = input(message)
+            yes_no = eval(input(message))
         return yes_no in ('y', 'Y')
 
     def update_server_url(self):
@@ -147,7 +148,7 @@ class ZanataInit(CommandsInit, ContextBase):
         projects_dict = dict((project.id, project.name) for project in self.zanata_cmd.get_projects())
         project_choice = self.print_options(
             "\n\t======= Available project(s): ID (name) ======",
-            ['%s %s%s%s' % (id, '(', name, ')') for id, name in projects_dict.items()],
+            ['%s %s%s%s' % (id, '(', name, ')') for id, name in list(projects_dict.items())],
             "\n[?] Please select your project (index number) or enter part of the project ID/name to filter: ",
             True
         )
@@ -160,17 +161,17 @@ class ZanataInit(CommandsInit, ContextBase):
         print("Refer to http://zanata.org/help/projects/create-project/ for help.")
         print("Project ID must start and end with letter or number, and contain only "
               "letters, numbers, underscores and hyphens.")
-        input_project_id = input("[?] What ID should your project have? ")
-        input_project_name = input("[?] What display name should your project have? ")
-        input_project_desc = input("[?] What discription should your project have? ")
-        input_project_type = input("[?] What is your project type (gettext, podir)? ")
+        input_project_id = eval(input("[?] What ID should your project have? "))
+        input_project_name = eval(input("[?] What display name should your project have? "))
+        input_project_desc = eval(input("[?] What discription should your project have? "))
+        input_project_type = eval(input("[?] What is your project type (gettext, podir)? "))
         project_type = input_project_type if input_project_type in ('gettext', 'podir') \
             else 'IterationProject'
         try:
             log.info("Creating project on the server...")
             if not self.zanata_cmd.create_project(input_project_id, input_project_name,
                                                   input_project_desc, project_type):
-                raise
+                raise ConnectionError
         except:
             if self.print_yes_no("[?] Do you want to try again (y/n)? "):
                 return self._create_new_project()
@@ -209,12 +210,12 @@ class ZanataInit(CommandsInit, ContextBase):
         log.info('Now working with version: %s' % version_choice)
 
     def _create_new_version(self):
-        input_version_id = input("[?] What ID should your version have: ")
+        input_version_id = eval(input("[?] What ID should your version have: "))
         try:
             log.info("Creating version on the server...")
             if not self.zanata_cmd.create_version(self.local_config.get('project_id'),
                                                   input_version_id):
-                raise
+                raise ConnectionError
         except:
             if self.print_yes_no("[?] Do you want to try again (y/n)? "):
                 return self._create_new_version()
@@ -285,11 +286,11 @@ class ZanataInit(CommandsInit, ContextBase):
                     self.print_trans_matches(match, locale, transdir)
 
     def input_dirs(self, message, mode):
-        input_dir = input(message)
+        input_dir = eval(input(message))
         while not (input_dir and os.path.isdir(os.path.curdir + '/' + input_dir)):
             self.ptxt('alert', "Directory %s does not exist! Please re-enter." % input_dir) if input_dir \
                 else self.ptxt('alert', "Can not have blank answer. Please try again.")
-            input_dir = input(message)
+            input_dir = eval(input(message))
         if mode == 'target' and self.local_config.get('srcdir'):
             list_dir = self.local_config['srcdir']
         else:

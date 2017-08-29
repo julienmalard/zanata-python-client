@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #
 # Zanata Python Client
 #
@@ -21,15 +22,15 @@
 
 import unittest
 
-from test_client import RestHandleTest
+from .test_client import RestHandleTest
 
-from test_context import ProjectContextTest
+from .test_context import ProjectContextTest
 
-from test_parseconfig import ConfigTest
+from .test_parseconfig import ConfigTest
 
-from test_publicanutil import PublicanUtilityTest
+from .test_publicanutil import PublicanUtilityTest
 
-from test_service import ServiceTest
+from .test_service import ServiceTest
 
 # from test_zanata import ZanataTest
 

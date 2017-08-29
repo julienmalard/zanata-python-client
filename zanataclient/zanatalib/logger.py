@@ -1,3 +1,4 @@
+from __future__ import print_function
 # vim:set et sts=4 sw=4:
 #
 # Zanata Python Client
@@ -19,12 +20,13 @@
 # License along with this program; if not, write to the
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
+from builtins import object
 __all__ = (
     "Logger",
 )
 
 
-class TextColour:
+class TextColour(object):
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -35,7 +37,7 @@ class TextColour:
     UNDERLINE = '\033[4m'
 
 
-class Logger:
+class Logger(object):
     def __init__(self):
         self.enable_infoprefix = True
         self.enable_warnprefix = True

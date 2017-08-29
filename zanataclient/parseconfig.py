@@ -19,6 +19,10 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import object
 __all__ = (
     "ZanataConfig",
 )
@@ -30,7 +34,7 @@ from .zanatalib.logger import Logger
 
 
 try:
-    from ConfigParser import ConfigParser
+    from configparser import ConfigParser
 except ImportError:
     from configparser import ConfigParser
 
@@ -166,7 +170,7 @@ class ZanataConfig(object):
                         project_config['file_mapping_rules'].update(pattern_map)
 
         return dict((node, value.strip() if isinstance(value, str) else value)
-                    for node, value in project_config.items() if value)
+                    for node, value in list(project_config.items()) if value)
 
 
 def getCombinedTextChildren(node):

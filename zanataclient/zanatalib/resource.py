@@ -21,6 +21,7 @@
 # Boston, MA  02110-1301, USA.
 
 
+from builtins import object
 __all__ = (
     "ZanataResource",
 )
@@ -32,7 +33,7 @@ from .statservice import StatService
 from .versionservice import VersionService
 
 
-class ZanataResource:
+class ZanataResource(object):
     def __init__(self, base_url, http_headers):
         self.base_url = base_url
         self.projects = ProjectService(base_url, http_headers)

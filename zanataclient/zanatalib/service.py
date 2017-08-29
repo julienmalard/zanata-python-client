@@ -1,8 +1,12 @@
+from __future__ import print_function
 
+from builtins import zip
+from builtins import str
+from builtins import object
 import json
 import sys
 
-from error import (
+from .error import (
     BadRequestBodyException,
     ForbiddenException,
     InternalServerError,
@@ -14,10 +18,10 @@ from error import (
     UnavailableServiceError,
     UnexpectedStatusException,
 )
-from projectutils import ToolBox
+from .projectutils import ToolBox
 
-from rest.client import RestClient
-from rest.config import media_types
+from .rest.client import RestClient
+from .rest.config import media_types
 
 
 __all__ = (
@@ -44,7 +48,7 @@ class Service(object):
     def __init__(self, *args, **kargs):
         for name, val in zip(self._fields, args):
             setattr(self, name, val)
-        for key, value in kargs.iteritems():
+        for key, value in kargs.items():
             setattr(self, key, value)
         self.restclient = RestClient(self.base_url)
 
@@ -52,7 +56,7 @@ class Service(object):
         try:
             raise exception_class(error, error_msg)
         except exception_class as e:
-            print '', e
+            print('', e)
         finally:
             sys.exit(1)
 
@@ -64,7 +68,7 @@ class Service(object):
             try:
                 rst = ToolBox.xmlstring2dict(content) \
                     if res.get('content-type') and 'xml' in res['content-type'] else json.loads(content)
-            except ValueError, e:
+            except ValueError as e:
                 if content.strip() == "":
                     return rst
                 if res.get('content-type') and res['content-type'] not in media_types:
@@ -84,6 +88,6 @@ class Service(object):
                                   'Error', 'Unexpected Status (%s), failed to push: %s' % (res['status'], extra_msg or ""))
 
     def _to_unicode(self, some_string):
-        if not isinstance(some_string, unicode):
-            return unicode(some_string)
+        if not isinstance(some_string, str):
+            return str(some_string)
         return some_string

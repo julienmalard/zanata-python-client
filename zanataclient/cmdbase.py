@@ -20,6 +20,9 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from builtins import zip
+from builtins import str
+from builtins import object
 import os
 import string
 import sys
@@ -39,7 +42,7 @@ class CommandsInit(object):
     def __init__(self, *args, **kargs):
         for name, val in zip(self._fields, args):
             setattr(self, name, val)
-        for key, value in kargs.items():
+        for key, value in list(kargs.items()):
             setattr(self, key, value)
 
     def check_essential(self, item, message):
@@ -238,8 +241,7 @@ class Stats(CommandsBase):
                          if cmd in self.context_data])
         cmd_opts['locale_map'] = self.context_data.get('locale_map')
         if self.context_data.get('lang') and isinstance(self.context_data['lang'], str):
-            cmd_opts['lang'] = filter(lambda locale: locale if locale else None,
-                                      self.context_data['lang'].split(','))
+            cmd_opts['lang'] = [locale if locale and locale else None for locale in self.context_data['lang'].split(',')]
         self.zanatacmd.display_translation_stats(*id_version, **cmd_opts)
 
 
@@ -335,7 +337,7 @@ class PushPull(CommandsBase):
         if 'lang' in self.context_data:
             lang_list = self.context_data.get('lang').split(',')
         elif 'locale_map' in self.context_data:
-            lang_list = self.context_data.get('locale_map').keys()
+            lang_list = list(self.context_data.get('locale_map').keys())
         else:
             log.error("Please specify the language with '--lang' option or in zanata.xml")
             sys.exit(1)

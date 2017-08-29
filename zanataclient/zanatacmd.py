@@ -1,3 +1,4 @@
+from __future__ import print_function
 # vim: set et sts=4 sw=4:
 #
 # Zanata Python Client
@@ -20,6 +21,10 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from builtins import input
+from builtins import str
+from builtins import map
+from builtins import object
 import os
 import sys
 
@@ -48,7 +53,7 @@ except NameError:
     pass
 
 
-class ZanataCommand:
+class ZanataCommand(object):
     def __init__(self, url, http_headers):
         self.log = Logger()
         self.zanata_resource = ZanataResource(url, http_headers)
@@ -154,7 +159,7 @@ class ZanataCommand:
             self.log.warn("This will overwrite/delete any existing documents on the server.")
             if not force:
                 while True:
-                    option = input("Are you sure (y/n)?")
+                    option = eval(input("Are you sure (y/n)?"))
                     if option.lower() == "yes" or option.lower() == "y":
                         break
                     elif option.lower() == "no" or option.lower() == "n":
@@ -205,13 +210,13 @@ class ZanataCommand:
             sys.exit(1)
 
         for project in projects:
-            print("\nProject ID:          %s") % project.id
-            print("Project Name:        %s") % project.name
+            print(("\nProject ID:          %s") % project.id)
+            print(("Project Name:        %s") % project.name)
             if hasattr(project, 'defaultType') and project.defaultType.strip():
-                print("Project Type:        %s") % project.defaultType
-            print("Project Links:       %s") % [{'href': link.href, 'type': link.type, 'rel': link.rel} for link in project.links]
+                print(("Project Type:        %s") % project.defaultType)
+            print(("Project Links:       %s") % [{'href': link.href, 'type': link.type, 'rel': link.rel} for link in project.links])
             if hasattr(project, 'status'):
-                print("Project Status:      %s") % project.status
+                print(("Project Status:      %s") % project.status)
 
     def project_info(self, project_id):
         """
@@ -219,17 +224,17 @@ class ZanataCommand:
         """
         try:
             p = self.zanata_resource.projects.get(project_id)
-            print("\nProject ID:        %s") % p.id
-            print("Project Name:      %s") % p.name
+            print(("\nProject ID:        %s") % p.id)
+            print(("Project Name:      %s") % p.name)
             if hasattr(p, 'defaultType') and p.defaultType.strip():
-                print("Project Type:      %s") % p.defaultType
+                print(("Project Type:      %s") % p.defaultType)
             if hasattr(p, 'description') and p.description.strip():
-                print("Project Desc:      %s") % p.description
+                print(("Project Desc:      %s") % p.description)
             if hasattr(p, 'status'):
-                print("Project Status:    %s") % p.status
+                print(("Project Status:    %s") % p.status)
             versions = self.get_project_versions(project_id)
             if versions:
-                print(" %s Version(s):    [%s]") % (len(versions), ", ".join(versions))
+                print((" %s Version(s):    [%s]") % (len(versions), ", ".join(versions)))
             print("\n")
         except NoSuchProjectException as e:
             self.log.error(str(e))
@@ -256,11 +261,11 @@ class ZanataCommand:
         try:
             project = self.zanata_resource.projects.get(project_id)
             iteration = project.get_iteration(iteration_id)
-            print("\nVersion ID: %s") % iteration.id
+            print(("\nVersion ID: %s") % iteration.id)
             if hasattr(iteration, 'name'):
-                print("Version Name: %s") % iteration.name
+                print(("Version Name: %s") % iteration.name)
             if hasattr(iteration, 'description'):
-                print("Version Description: %s") % iteration.description
+                print(("Version Description: %s") % iteration.description)
             # This can be implemented with some flag etc.
             # filelist = self.zanata_resource.documents.get_file_list(project_id, iteration_id)
             # if filelist:
@@ -447,7 +452,7 @@ class ZanataCommand:
         """
         publicanutil = PublicanUtility()
         # if file no specified, retrieve all the files of project
-        for file_item, lang_list in filedict.items():
+        for file_item, lang_list in list(filedict.items()):
             pot = ""
             result = ""
             folder = ""
@@ -559,12 +564,12 @@ class ZanataCommand:
             self.log.error(str(e))
         else:
             percent_dict = Stats(server_return).trans_percent_dict
-            for doc, stat in percent_dict.items():
+            for doc, stat in list(percent_dict.items()):
                 disqualify_locales = []
-                for locale, trans_percent in stat.items():
+                for locale, trans_percent in list(stat.items()):
                     if trans_percent < int(min_doc_percent):
                         disqualify_locales.append(locale)
-                disqualify_locales = [alias for alias, locale in locale_map.items()
+                disqualify_locales = [alias for alias, locale in list(locale_map.items())
                                       for lang in disqualify_locales if lang == locale]
                 if disqualify_locales:
                     self.log.info('Translation file for document %s for locales [%s] are skipped '
@@ -595,7 +600,7 @@ class ZanataCommand:
         for stat in collection:
             values = (
                 [alias if lang == stat.get('locale') else stat.get('locale')
-                 for alias, lang in locale_map.items()][0],
+                 for alias, lang in list(locale_map.items())][0],
                 stat.get('unit', 'MESSAGE'), stat.get('total', '0'),
                 stat.get('translated', '0'), stat.get('needReview', '0'),
                 stat.get('untranslated', '0'), stat.get('lastTranslated', '')
@@ -627,7 +632,7 @@ class ZanataCommand:
                 self.log.info('Document: %s' % trans_stats.stats_id)
             if 'detailstats' in kwargs:
                 self._display_stats(trans_stats.trans_stats_dict, locale_map)
-                for doc, stats in trans_stats.trans_stats_detail_dict.items():
+                for doc, stats in list(trans_stats.trans_stats_detail_dict.items()):
                     self._display_doc_stats(doc, stats, locale_map)
             else:
                 self._display_stats(trans_stats.trans_stats_dict, locale_map)

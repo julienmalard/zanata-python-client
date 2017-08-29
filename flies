@@ -22,7 +22,7 @@
 # USA
 from zanataclient import zanata 
 
-print "Warning: please use zanata command instead of flies"
+print("Warning: please use zanata command instead of flies")
 zanata.run()
 
 

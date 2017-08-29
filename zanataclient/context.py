@@ -20,6 +20,9 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from builtins import str
+from builtins import range
+from builtins import object
 __all__ = (
     "ProjectContext",
 )
@@ -210,7 +213,7 @@ class ContextBase(object):
         This fetches locale-mapping from server
         """
         local_config_locale_map = self.local_config.get('locale_map')
-        if local_config_locale_map and len(local_config_locale_map.keys()) > 0:
+        if local_config_locale_map and len(list(local_config_locale_map.keys())) > 0:
             log.warn('Locale mappings are now handled using locale aliases on the server, '
                      'so locale mappings in the project config file (zanata.xml) are now deprecated.'
                      '\nPlease add a locale alias in the project language settings to replace each locale '
@@ -293,7 +296,7 @@ class ProjectContext(ContextBase):
         # lowest to higest
         precedence = [self.remote_config, self.local_config, self.command_dict]
         context_data = functools.reduce(
-            lambda option, value: dict(option.items() + value.items()), precedence
+            lambda option, value: dict(list(option.items()) + list(value.items())), precedence
         )
         return self.filter_context_data(context_data)
 

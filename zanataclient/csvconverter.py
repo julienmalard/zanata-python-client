@@ -1,3 +1,4 @@
+from __future__ import print_function
 # vim:set et sts=4 sw=4:
 #
 # Zanata Python Client
@@ -20,6 +21,8 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from builtins import range
+from builtins import object
 __all__ = (
     "CSVConverter",
 )
@@ -36,7 +39,7 @@ except ImportError:
     import simplejson as json
 
 
-class CSVConverter:
+class CSVConverter(object):
     def __init__(self):
         self.log = Logger()
 
@@ -44,7 +47,7 @@ class CSVConverter:
         data = []
         try:
             reader = csv.reader(open(csv_file, 'rb'))
-            header = reader.next()
+            header = next(reader)
             size = len(header)
             for line in reader:
                 items = {}
@@ -95,7 +98,7 @@ class CSVConverter:
                 comments_len = len(comments)
                 if glossary_len != csv_locales_len + comments_len:
                     print("Wrong entries in csv file, please check your csv file")
-                    print("Entry in csv file", item)
+                    print(("Entry in csv file", item))
                     sys.exit(1)
                 glossary_comments = item[-2:]
                 for j in range(csv_locales_len):

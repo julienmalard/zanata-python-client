@@ -2,9 +2,12 @@
 """
 Build script for zanata-python-client
 """
+from __future__ import print_function
 from setuptools import setup, find_packages
 import os
 import subprocess
+
+import zanataclient.zanata
 
 
 def read(fname):
@@ -21,7 +24,7 @@ def get_client_version():
         version = open(version_file, 'rb')
         client_version = version.read()
         version.close()
-        version_number = client_version.rstrip().strip('version: ')
+        version_number = client_version.rstrip().decode().strip('version: ')
     except IOError:
         print("Please run VERSION-GEN or 'make install' to generate VERSION-FILE")
         version_number = "UNKNOWN"
@@ -43,6 +46,7 @@ setup(
     license='LGPLv2+',
     platforms=["Linux"],
     scripts=["zanata", "flies"],
+    entry_points={'console_scripts': ['zanata=zanataclient.zanata:run']},
     url='https://github.com/zanata/zanata-python-client',
 
     # entry_points = {
@@ -67,5 +71,6 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.6'
     ],
 )

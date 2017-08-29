@@ -1,3 +1,4 @@
+from __future__ import print_function
 # vim: set et sts=4 sw=4:
 # Zanata Python Client
 #
@@ -19,6 +20,11 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import zip
+from builtins import object
 __all__ = (
     "RestHandle", "RestClient"
 )
@@ -26,7 +32,7 @@ __all__ = (
 try:
     from urllib.parse import urlparse
 except ImportError:
-    from urlparse import urlparse
+    from urllib.parse import urlparse
 import os
 import sys
 import warnings
@@ -37,7 +43,7 @@ from .config import ServiceConfig
 from ..logger import Logger
 
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 warnings.simplefilter("ignore", DeprecationWarning)
@@ -65,7 +71,7 @@ class RestHandle(object):
             raise Exception('Insufficient args.')
         self.base_url, self.uri, self.method = args
 
-        for attrib, value in kwargs.items():
+        for attrib, value in list(kwargs.items()):
             if value:
                 setattr(self, str(attrib), value)
 
@@ -149,9 +155,9 @@ class RestHandle(object):
 
     def get_response_content(self):
         request_args = ('body', 'headers', 'connection_type')
-        args_dict = dict(zip(
+        args_dict = dict(list(zip(
             request_args, [getattr(self, arg, None) for arg in request_args]
-        ))
+        )))
         args_dict.update({'redirections': DEFAULT_MAX_REDIRECTS})
         response, content = self._call_request(self._get_url(), self.method, **args_dict)
 
@@ -186,7 +192,7 @@ class RestClient(object):
             headers['Content-Type'] = service_details.request_media_type
         # set resource
         resource = (
-            service_details.resource.format(**dict(zip(service_details.path_params, args)))
+            service_details.resource.format(**dict(list(zip(service_details.path_params, args))))
             if args else service_details.resource
         )
         # initiate service call
