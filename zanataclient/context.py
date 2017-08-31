@@ -167,7 +167,7 @@ class ContextBase(object):
         version_file = os.path.join(path, client_version_file)
 
         try:
-            version = open(version_file, 'rb')
+            version = open(version_file, 'r')
             client_version = version.read()
             version.close()
             version_number = client_version.rstrip()[len('version: '):]

@@ -99,20 +99,20 @@ class ZanataInit(CommandsInit, ContextBase):
                 counter += 1
                 counter_dict.update({str(counter): option})
                 self.ptxt('info_blue', "\t%s) %s" % (str(counter), option))
-        choice = eval(input(message))
+        choice = input(message)
         while choice not in counter_dict:
             if filter_mode:
                 filtered_options = [option if option and option.find(choice) != -1 else None for option in options]
                 return self.print_options(header, filtered_options, message, True)
             else:
                 self.ptxt('alert', "Expecting %s but got: %s" % (str(list(counter_dict.keys())), choice))
-                choice = eval(input(message))
+                choice = input(message)
         return counter_dict[choice]
 
     def print_yes_no(self, message):
-        yes_no = eval(input(message))
+        yes_no = input(message)
         while yes_no not in ('y', 'n', 'Y', 'N'):
-            yes_no = eval(input(message))
+            yes_no = input(message)
         return yes_no in ('y', 'Y')
 
     def update_server_url(self):
@@ -161,10 +161,10 @@ class ZanataInit(CommandsInit, ContextBase):
         print("Refer to http://zanata.org/help/projects/create-project/ for help.")
         print("Project ID must start and end with letter or number, and contain only "
               "letters, numbers, underscores and hyphens.")
-        input_project_id = eval(input("[?] What ID should your project have? "))
-        input_project_name = eval(input("[?] What display name should your project have? "))
-        input_project_desc = eval(input("[?] What discription should your project have? "))
-        input_project_type = eval(input("[?] What is your project type (gettext, podir)? "))
+        input_project_id = input("[?] What ID should your project have? ")
+        input_project_name = input("[?] What display name should your project have? ")
+        input_project_desc = input("[?] What discription should your project have? ")
+        input_project_type = input("[?] What is your project type (gettext, podir)? ")
         project_type = input_project_type if input_project_type in ('gettext', 'podir') \
             else 'IterationProject'
         try:
@@ -210,7 +210,7 @@ class ZanataInit(CommandsInit, ContextBase):
         log.info('Now working with version: %s' % version_choice)
 
     def _create_new_version(self):
-        input_version_id = eval(input("[?] What ID should your version have: "))
+        input_version_id = input("[?] What ID should your version have: ")
         try:
             log.info("Creating version on the server...")
             if not self.zanata_cmd.create_version(self.local_config.get('project_id'),
@@ -286,11 +286,11 @@ class ZanataInit(CommandsInit, ContextBase):
                     self.print_trans_matches(match, locale, transdir)
 
     def input_dirs(self, message, mode):
-        input_dir = eval(input(message))
+        input_dir = input(message)
         while not (input_dir and os.path.isdir(os.path.curdir + '/' + input_dir)):
             self.ptxt('alert', "Directory %s does not exist! Please re-enter." % input_dir) if input_dir \
                 else self.ptxt('alert', "Can not have blank answer. Please try again.")
-            input_dir = eval(input(message))
+            input_dir = input(message)
         if mode == 'target' and self.local_config.get('srcdir'):
             list_dir = self.local_config['srcdir']
         else:
@@ -336,7 +336,7 @@ class ZanataInit(CommandsInit, ContextBase):
         xmldoc = ToolBox.dict2xml('config', project_config_dict)
         try:
             with open('zanata.xml', 'w') as project_config_file:
-                project_config_file.write(xmldoc)
+                project_config_file.write(xmldoc.decode())
         except IOError:
             log.error("Something went wrong. Try Again.")
         else:

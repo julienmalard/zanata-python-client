@@ -159,7 +159,7 @@ class ZanataCommand(object):
             self.log.warn("This will overwrite/delete any existing documents on the server.")
             if not force:
                 while True:
-                    option = eval(input("Are you sure (y/n)?"))
+                    option = input("Are you sure (y/n)?")
                     if option.lower() == "yes" or option.lower() == "y":
                         break
                     elif option.lower() == "no" or option.lower() == "n":
