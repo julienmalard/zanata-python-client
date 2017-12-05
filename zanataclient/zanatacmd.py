@@ -126,8 +126,8 @@ class ZanataCommand(object):
             self.log.error(str(e))
 
     def update_template(self, project_id, iteration_id, filename, body, copytrans):
-        if '/' in filename:
-            request_name = filename.replace('/', ',')
+        if '/' in filename or '\\' in filename:
+            request_name = filename.replace('/', ',').replace('\\', ',')
         else:
             request_name = filename
 
@@ -319,6 +319,7 @@ class ZanataCommand(object):
                 else:
                     remote_lang = local_lang
 
+            potfile = potfile.replace('\\', '/')
             if '/' in potfile:
                 name = potfile.split('/')[-1]
                 request_name = potfile.replace('/', ',')
@@ -391,7 +392,7 @@ class ZanataCommand(object):
                 else:
                     self.log.info("Pushing the %s translation of %s to server:" % (local_lang, filename))
 
-                request_name = filename.replace('/', ',')
+                request_name = filename.replace('/', ',').replace('\\', ',')
 
                 body = publicanutil.pofile_to_json(pofile)
 
@@ -458,8 +459,8 @@ class ZanataCommand(object):
             folder = ""
 
             if '/' in file_item:
-                name = file_item.split('/')[-1]
-                folder = file_item[0:file_item.rfind('/')]
+                name = file_item  # .split('/')[-1]
+                # folder = file_item[0:file_item.rfind('/')]
                 request_name = file_item.replace('/', ',')
             else:
                 name = request_name = file_item

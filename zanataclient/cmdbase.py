@@ -482,4 +482,4 @@ class PushPull(CommandsBase):
             "Please specify PROJECT_TYPE with --project-type option or using zanata.xml"
         ))
         log.info("Username: %s" % (username or 'Anonymous'))
-        log.info("Source language: en-US")
+        log.info("Source language: ")

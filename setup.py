@@ -24,7 +24,7 @@ def get_client_version():
         version = open(version_file, 'r')
         client_version = version.read()
         version.close()
-        version_number = client_version.rstrip().decode().strip('version: ')
+        version_number = client_version.rstrip().strip('version: ')
     except IOError:
         print("Please run VERSION-GEN or 'make install' to generate VERSION-FILE")
         version_number = "UNKNOWN"
