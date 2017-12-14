@@ -30,6 +30,7 @@ def get_client_version():
         version_number = "UNKNOWN"
     return version_number
 
+
 requirements = read('requirements.txt').splitlines() + [
     'setuptools',
 ]

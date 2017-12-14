@@ -323,7 +323,7 @@ class ZanataCommand(object):
             if '/' in potfile:
                 name = potfile.split('/')[-1]
                 request_name = potfile.replace('/', ',')
-                sub_dir = potfile[0:potfile.rfind('/')]
+                # sub_dir = potfile[0:potfile.rfind('/')]
             else:
                 name = request_name = potfile
 
@@ -331,7 +331,7 @@ class ZanataCommand(object):
 
             pofile = FileMappingRule(
                 project_type, local_lang, 'po', file_mapping_rules, **{
-                    'trans_folder': trans_folder, 'path': sub_dir, 'filename': name, 'remote_filepath': potfile,
+                    'trans_folder': trans_folder, 'path': sub_dir, 'filename': potfile, 'remote_filepath': potfile,
                 }
             ).translation_path
 
@@ -374,6 +374,7 @@ class ZanataCommand(object):
 
             for filename in filelist:
                 sub_dir = ''
+                filename = filename.replace('\\', '/')
                 if '/' in filename:
                     name = filename.split('/')[-1]
                     sub_dir = filename[0:filename.rfind('/')]
